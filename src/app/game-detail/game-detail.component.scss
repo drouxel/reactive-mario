@@ -1,0 +1,23 @@
+.game-card {
+  width: 250px;
+  margin-bottom: 8px;
+  height: 225px;
+
+  .mat-mdc-card-content {
+    display: flex;
+    flex-grow: 1;
+    align-items: flex-end;
+  }
+  .game-description {
+    display: flex;
+    flex-direction: column;
+
+  }
+  .game-img {
+    height: unset;
+    width: unset;
+    max-height: 75px;
+    max-width: 25%;
+    image-rendering: optimizeQuality;
+  }
+}

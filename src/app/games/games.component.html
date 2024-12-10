@@ -1,0 +1,55 @@
+<header>
+  <form class="filters">
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput placeholder="Ex. Yoshi" [formControl]="searchControl">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Plateforme</mat-label>
+      <mat-select [formControl]="deviceControl">
+        <mat-option value="null"></mat-option>
+        @for (device of devices$ | async; track device.code) {
+          <mat-option
+            [value]="device.code"
+            [matTooltip]="device.description_fr"
+            [matTooltipPosition]="'left'"
+          >
+            <img [ngSrc]="device.logo" width="15" height="15" [alt]="device.name"/>
+            {{device.name}}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Trier</mat-label>
+      <mat-select>
+        <mat-option [value]="{ field: 'release_date_eur', sort: 'DESC' }">Les plus récent d'abord</mat-option>
+        <mat-option [value]="{ field: 'release_date_eur', sort: 'ASC' }">Les plus anciens d'abord</mat-option>
+        <mat-option [value]="{ field: 'name', sort: 'ASC' }">Par ordre alphabétique</mat-option>
+        <mat-option [value]="{ field: 'name', sort: 'DESC' }">Par ordre alphabétique inversé</mat-option>
+        <mat-option [value]="{ field: 'popularity', sort: 'DESC' }">Les plus populaires</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  {{pagination$ | async | json}}
+</header>
+@let games = (games$ | async);
+<main>
+  @defer( when !!games){
+    @if(!games?.length) {
+      <p>oh no! you lost!</p>
+    }@else {
+      @for(game of games$ | async; track game.id) {
+        <app-game-detail
+          [gameId]="game.id"
+        />
+      }
+    }
+  } @placeholder (minimum 300) {
+    <div class="spinner-container">
+      <mat-spinner/>
+    </div>
+  } @error {
+    you lose
+  }
+</main>
