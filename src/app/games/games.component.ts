@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {GamesService} from './games.service';
 import {AsyncPipe, JsonPipe, NgOptimizedImage} from '@angular/common';
-import {Device, GameSearchItem, PaginatedSearchResult, PaginationResult} from './game-search-result.model';
+import {Device, GameSearchItem, PaginatedSearchResult, PaginationResult, Sort} from './game-search-result.model';
 import {combineLatest, debounceTime, map, Observable, shareReplay, startWith, switchMap} from 'rxjs';
 import {GameDetailComponent} from '../game-detail/game-detail.component';
 import {MatInputModule} from '@angular/material/input';
@@ -34,14 +34,16 @@ export class GamesComponent {
   public devices$: Observable<Device[]> = this._gamesService.getDevices$()
   public searchControl: FormControl = new FormControl<string>('',);
   public deviceControl: FormControl = new FormControl<string>('',);
+  public sortControl: FormControl = new FormControl({ field: 'release_date_eur', sort: 'DESC' },);
 
   public result$: Observable<PaginatedSearchResult<GameSearchItem>> = combineLatest([
     this.getValueFromControl$<string>(this.searchControl),
-    this.getValueFromControl$<string>(this.deviceControl)
+    this.getValueFromControl$<string>(this.deviceControl),
+    this.getValueFromControl$<Sort>(this.sortControl)
   ]).pipe(
     debounceTime(1000/3),
-    switchMap(([search, device]) =>
-      this._gamesService.getPaginated$(search, device)),
+    switchMap(([search, device, sort]) =>
+      this._gamesService.getPaginated$(search, device, sort)),
     shareReplay()
   );
   public pagination$: Observable<PaginationResult> = this.result$.pipe(map((result: PaginatedSearchResult<GameSearchItem>) => result.pagination));

@@ -6,7 +6,7 @@ import {
   GameDetail,
   PaginatedSearchResult,
   MarioUniversalisResponse,
-  GameSearchItem
+  GameSearchItem, Sort
 } from './game-search-result.model';
 
 @Injectable({
@@ -23,9 +23,9 @@ export class GamesService {
       )
   }
 
-  public getPaginated$(filter: string, device: string): Observable<PaginatedSearchResult<GameSearchItem>> {
+  public getPaginated$(filter: string, device: string, sort: Sort): Observable<PaginatedSearchResult<GameSearchItem>> {
     return this.http.post<MarioUniversalisResponse<{ games: PaginatedSearchResult<GameSearchItem> }>>
-    (this._baseUrl, {query: this.getGamesQuery(filter, device)})
+    (this._baseUrl, {query: this.getGamesQuery(filter, device, sort)})
       .pipe(
         map((response) => response.data.games)
       )
@@ -61,10 +61,10 @@ export class GamesService {
     }`
   }
 
-  private getGamesQuery(filter: string, device: string): string {
+  private getGamesQuery(filter: string, device: string, sort: Sort): string {
     return `{
       games(search: "${filter}" ${device? ', device: '+ device : ''},
-        order_by: { field: release_date_eur, sort: DESC },
+        order_by: { field: ${sort.field}, sort: ${sort.sort}},
         per_page: 12
       ) {
         pagination {

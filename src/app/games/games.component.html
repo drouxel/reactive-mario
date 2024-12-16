@@ -22,7 +22,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Trier</mat-label>
-      <mat-select>
+      <mat-select [formControl]="sortControl">
         <mat-option [value]="{ field: 'release_date_eur', sort: 'DESC' }">Les plus récent d'abord</mat-option>
         <mat-option [value]="{ field: 'release_date_eur', sort: 'ASC' }">Les plus anciens d'abord</mat-option>
         <mat-option [value]="{ field: 'name', sort: 'ASC' }">Par ordre alphabétique</mat-option>

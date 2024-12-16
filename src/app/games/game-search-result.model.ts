@@ -42,3 +42,8 @@ export class Device {
 export class MarioUniversalisResponse<T> {
   data!: T;
 }
+
+export class Sort {
+  field!: 'release_date_eur' | 'name' | 'popularity';
+  sort!: 'ASC' | 'DESC';
+}
