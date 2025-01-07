@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {GamesService} from './games.service';
-import {AsyncPipe, JsonPipe, NgOptimizedImage} from '@angular/common';
+import {AsyncPipe, DatePipe, JsonPipe, NgOptimizedImage} from '@angular/common';
 import {Device, GameSearchItem, PaginatedSearchResult, PaginationResult, Sort} from './game-search-result.model';
 import {combineLatest, debounceTime, map, Observable, shareReplay, startWith, switchMap} from 'rxjs';
 import {GameDetailComponent} from '../game-detail/game-detail.component';
@@ -10,12 +10,12 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatSelectModule} from '@angular/material/select';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import { MatTableModule} from '@angular/material/table';
 @Component({
   selector: 'app-games',
   imports: [
     JsonPipe,
     AsyncPipe,
-    GameDetailComponent,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -23,7 +23,9 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
     MatSelectModule,
     NgOptimizedImage,
     MatTooltip,
-    MatProgressSpinner
+    MatProgressSpinner,
+    MatTableModule,
+    DatePipe
   ],
   templateUrl: './games.component.html',
   styleUrl: './games.component.scss',

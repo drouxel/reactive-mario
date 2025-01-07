@@ -7,14 +7,19 @@
     size: contain;
   };
   border-radius: 0 10px 10px 0;
-  overflow: auto;
+  max-height: 100%;
   main {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    table {
+      img {
+        max-height: 8vh;
+      }
+    }
+    overflow: auto;
+    height: 75vh;
   }
+  header, footer {
+    height: 10vh;
+  };
 
   .spinner-container {
     display: flex;

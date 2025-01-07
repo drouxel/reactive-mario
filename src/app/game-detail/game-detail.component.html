@@ -1,37 +1,40 @@
 @let game = game$ | async;
 @defer (when game ) {
   <mat-card class="game-card" appearance="outlined">
-    <mat-card-header>
-      <mat-card-title-group>
-        <mat-card-title>
-          {{ game?.name }}
-        </mat-card-title>
-        <mat-card-subtitle>
-          @if (game?.device?.logo) {
-            <p>
-              <img [ngSrc]="game?.device?.logo ??''" [alt]="'logo of the device' + game?.device?.name" width="15" height="15"/>
-              {{game?.device?.name}}
-            </p>
+    <div>
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>
+            {{ game?.name }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            @if (game?.device?.logo) {
+              <p>
+                <img [ngSrc]="game?.device?.logo ??''" [alt]="'logo of the device' + game?.device?.name" width="15" height="15"/>
+                {{game?.device?.name}}
+              </p>
+            }
+          </mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="game-description">
+          <data>Date de sortie: {{game?.release_date | date}}</data>
+          @if(game?.genres?.length) {
+            @for(genre of game?.genres; track genre?.code) {
+              <data>
+                <img [ngSrc]="genre?.icon ??''" [alt]="'logo of the genre' + genre?.name" width="15" height="15"/>
+                {{genre?.name}}
+              </data>
+            }
           }
-        </mat-card-subtitle>
-        @if (game?.image) {
-          <img mat-card-md-image class="game-img" [src]="game?.image ?? ''"  [alt]="'image of the game' + game?.name">
-        }
-      </mat-card-title-group>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="game-description">
-        <data>Date de sortie: {{game?.release_date | date}}</data>
-        @if(game?.genres?.length) {
-          @for(genre of game?.genres; track genre?.code) {
-            <data>
-              <img [ngSrc]="genre?.icon ??''" [alt]="'logo of the genre' + genre?.name" width="15" height="15"/>
-              {{genre?.name}}
-            </data>
-          }
-        }
-      </div>
-    </mat-card-content>
+        </div>
+      </mat-card-content>
+
+    </div>
+    @if (game?.image) {
+      <img mat-card-md-image class="game-img" [src]="game?.image ?? ''"  [alt]="'image of the game' + game?.name">
+    }
   </mat-card>
 } @placeholder (minimum 200) {
   <mat-spinner

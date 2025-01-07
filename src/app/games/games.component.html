@@ -30,21 +30,48 @@
         <mat-option [value]="{ field: 'popularity', sort: 'DESC' }">Les plus populaires</mat-option>
       </mat-select>
     </mat-form-field>
-  </form>
   {{pagination$ | async | json}}
+  </form>
 </header>
 @let games = (games$ | async);
 <main>
   @defer( when !!games){
-    @if(!games?.length) {
-      <p>oh no! you lost!</p>
-    }@else {
-      @for(game of games$ | async; track game.id) {
-        <app-game-detail
-          [gameId]="game.id"
-        />
-      }
-    }
+    <table mat-table [dataSource]="games!" class="mat-elevation-z5">
+      <!-- Image Column -->
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> Image </th>
+        <td mat-cell *matCellDef="let element"> <img [src]="element.image" [alt]="'image for ' + element.name"> </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date de sortie </th>
+        <td mat-cell *matCellDef="let element"> {{element.release_date | date}} </td>
+      </ng-container>
+
+      <!-- Symbol genres -->
+      <ng-container matColumnDef="genres">
+        <th mat-header-cell *matHeaderCellDef> Genre(s) </th>
+        <td mat-cell *matCellDef="let element">
+          @for(genre of element.genres; track genre.code) {
+            <img
+              [ngSrc]="genre.icon" width="30" height="30"
+              [alt]="'icon for genre ' + genre.name"
+              [matTooltip]="genre.name"
+            />
+          }
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['image', 'name', 'date', 'genres']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['image', 'name', 'date', 'genres'];"></tr>
+    </table>
   } @placeholder (minimum 300) {
     <div class="spinner-container">
       <mat-spinner/>
@@ -53,3 +80,6 @@
     you lose
   }
 </main>
+<footer>
+  <p>on mettra des infos ici plus tard</p>
+</footer>

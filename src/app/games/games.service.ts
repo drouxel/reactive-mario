@@ -41,15 +41,15 @@ export class GamesService {
   private getSingleGameQuery(id: number): string {
     return `{
       game(id: "${id}") {
-          id
+        id
+        name
+        release_date(region: eur)
+        age(region: eur)
+        device {
           name
-          release_date(region: eur)
-          age(region: eur)
-          device {
-            name
-            logo
-            code
-          }
+          logo
+          code
+        }
         genres {
             name(lang: fr)
             icon
@@ -65,7 +65,7 @@ export class GamesService {
     return `{
       games(search: "${filter}" ${device? ', device: '+ device : ''},
         order_by: { field: ${sort.field}, sort: ${sort.sort}},
-        per_page: 12
+        per_page: 10
       ) {
         pagination {
           total_count
@@ -73,6 +73,18 @@ export class GamesService {
         }
         data {
           id
+          name
+          age(region: eur)
+          device {
+            name
+          }
+          image
+          release_date(region: eur)
+          genres {
+            name(lang: fr)
+            icon
+            code
+          }
         }
       }
     }`

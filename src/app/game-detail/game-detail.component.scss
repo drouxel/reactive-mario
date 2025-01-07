@@ -1,7 +1,7 @@
 .game-card {
-  width: 250px;
-  margin-bottom: 8px;
-  height: 225px;
+  width: 25rem;
+  margin-bottom: 1rem;
+  height: 22.5rem;
 
   .mat-mdc-card-content {
     display: flex;
@@ -16,8 +16,8 @@
   .game-img {
     height: unset;
     width: unset;
-    max-height: 75px;
-    max-width: 25%;
+    max-height: 20rem;
+    max-width: 35%;
     image-rendering: optimizeQuality;
   }
 }
