@@ -6,6 +6,11 @@ import { GamesComponent } from './games/games.component';
 export const routes: Routes = [
     {
         path: '',
+        redirectTo: 'user',
+        pathMatch: 'full'
+    },
+    {
+        path: 'user',
         loadComponent: () => UserDetailComponent
     },
     {

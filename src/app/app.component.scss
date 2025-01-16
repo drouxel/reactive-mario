@@ -5,4 +5,18 @@
   display: flex;
   flex-grow: 1;
   height: 100%;
+  div {
+    display:flex;
+    flex-grow: 1;
+    flex-direction: column;
+  }
+
+  .main-content {
+    background: {
+      image: url("https://i.pinimg.com/originals/8f/1a/b8/8f1ab8b14a55720d6859620a6f596933.jpg");
+      attachment: fixed;
+      size: contain;
+    };
+    border-bottom-right-radius: 1em;
+  }
 }

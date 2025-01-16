@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { UserStore } from './user.store';
 
 @Component({
   selector: 'app-user-detail',
@@ -30,7 +31,7 @@ export class UserDetailComponent {
    */
   constructor(
     private _formBuilder: FormBuilder, 
-    //private _userStore: UserStore
+    private _userStore: UserStore
   ) {
 
     this.userForm = this._formBuilder.group({
@@ -42,11 +43,11 @@ export class UserDetailComponent {
 
   public updateUser(): void {
     if (this.userForm.valid) {
-      //this._userStore.setUser(this.userForm.value)
+      this._userStore.setUser(this.userForm.value)
     }
   }
 
   public clearUser(): void {
-    //this._userStore.setUser();
+    this._userStore.setUser();
   }
 }
