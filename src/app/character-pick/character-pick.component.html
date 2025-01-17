@@ -1,0 +1,8 @@
+<h2>Pick your character!</h2>
+<mat-grid-list cols="3" rowHeight="1:1">
+    @for (character of characters; track character.name) {
+        <mat-grid-tile>
+            <img [ngSrc]="'character-images/' + character.imageName" fill alt="{{character.name}}">
+        </mat-grid-tile>
+    }
+</mat-grid-list>
