@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, filter, Observable, of } from 'rxjs';
 import { Character, MARIO_CHARACTERS } from './character.model';
+import { filterNullAndUndefined } from '../utils/observable.utils';
 
 /**
  * mediator class to share a Character entity through the app
@@ -14,8 +15,8 @@ export class CharacterStore {
 
     public getCurrentCharacter$(): Observable<Character> {
         return this.getCharacter$().pipe(
-            filter(character => !!character)
-        ) as Observable<Character>;
+            filterNullAndUndefined()
+        );
     }
 
     public getCharacter$(): Observable<Character | undefined> {

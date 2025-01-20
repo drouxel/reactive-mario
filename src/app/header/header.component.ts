@@ -1,8 +1,9 @@
 import { Component, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { UserStore } from '../user-detail/user.store';
 import { User } from '../user-detail/user.model';
+import { logger } from '../utils/observable.utils';
 
 @Component({
   selector: 'app-header',
@@ -17,9 +18,9 @@ export class HeaderComponent implements OnInit{
   constructor( private _userStore: UserStore) {}
 
   public ngOnInit(): void {
-    this.currentUser$ = this._userStore.getCurrentUser();
+    this.currentUser$ = this._userStore.getCurrentUser().pipe(logger('getCurrentUser'), shareReplay(1));
 
-    // have a look here to a what happens while the currentUser is undefined
+    // have a look here to see what happens while the currentUser is undefined
     this.currentUser$.subscribe(user => console.log('current user is', user));
   }
 }

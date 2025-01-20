@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { User } from "./user.model";
 import { BehaviorSubject, filter, Observable } from 'rxjs';
+import { filterNullAndUndefined } from '../utils/observable.utils';
 
 /**
  * mediator class to share a User entity through the app
@@ -13,8 +14,8 @@ export class UserStore {
 
     public getCurrentUser(): Observable<User> {
         return this.getUser().pipe(
-            filter(user => !!user)
-        ) as Observable<User>;
+            filterNullAndUndefined()
+        );
     }
 
     public getUser(): Observable<User | undefined> {
