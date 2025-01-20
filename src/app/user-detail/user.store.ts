@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { User } from "./user.model";
-import { BehaviorSubject, filter, Observable, tap } from 'rxjs';
+import { BehaviorSubject, filter, Observable } from 'rxjs';
 
 /**
  * mediator class to share a User entity through the app

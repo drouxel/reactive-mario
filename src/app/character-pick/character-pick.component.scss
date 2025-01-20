@@ -3,7 +3,7 @@
     flex-direction: column;
     padding: 1.5em;
     border-radius: 1em;
-    width: 400px;
+    width: 600px;
     margin: auto;
     background-color: aliceblue;
 
@@ -16,6 +16,9 @@
             box-shadow: 2px 2px 4px 1px rgba(0, 0, 0, 0.4);
             max-height: 85%;
             max-width: 85%;
+            &.selected {
+                opacity: .5;
+            }
         }
     }
 }

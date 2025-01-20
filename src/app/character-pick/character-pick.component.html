@@ -1,8 +1,14 @@
 <h2>Pick your character!</h2>
-<mat-grid-list cols="3" rowHeight="1:1">
-    @for (character of characters; track character.name) {
+<mat-grid-list cols="4" rowHeight="1:1">
+    @for (character of characters$ | async; track character.name) {
         <mat-grid-tile>
-            <img [ngSrc]="'character-images/' + character.imageName" fill alt="{{character.name}}">
+            <img 
+                [ngSrc]="'character-images/' + character.imageName" 
+                fill 
+                alt="{{character.name}}" 
+                (click)="pickCharacter(character)"
+                [class.selected]="character.name === (selecterCharacter$ | async)?.name"
+            >
         </mat-grid-tile>
     }
 </mat-grid-list>

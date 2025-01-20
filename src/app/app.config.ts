@@ -7,6 +7,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideHttpClient} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { UserStore } from './user-detail/user.store';
+import { CharacterStore } from './character-pick/character.store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()), provideAnimationsAsync(),
-    UserStore
+    UserStore,
+    CharacterStore
   ]
 };
