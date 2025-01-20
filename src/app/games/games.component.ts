@@ -11,6 +11,7 @@ import { MatSelectModule} from '@angular/material/select';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import { MatTableModule} from '@angular/material/table';
+import { InfiniteScrollComponent } from "../infinite-scroll/infinite-scroll.component";
 @Component({
   selector: 'app-games',
   imports: [
@@ -25,8 +26,9 @@ import { MatTableModule} from '@angular/material/table';
     MatTooltip,
     MatProgressSpinner,
     MatTableModule,
-    DatePipe
-  ],
+    DatePipe,
+    InfiniteScrollComponent
+],
   templateUrl: './games.component.html',
   styleUrl: './games.component.scss',
   providers: [GamesService]
@@ -51,6 +53,9 @@ export class GamesComponent {
   public pagination$: Observable<PaginationResult> = this.result$.pipe(map((result: PaginatedSearchResult<GameSearchItem>) => result.pagination));
   public games$: Observable<GameSearchItem[]> = this.result$.pipe(map(result => result.data));
 
+  public fetchMore(): void {
+    console.log('fetchMore')
+  }
   private getValueFromControl$<T>(control: FormControl): Observable<T> {
     return control.valueChanges.pipe(
       startWith(control.value)
