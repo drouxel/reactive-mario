@@ -1,9 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {toObservable} from '@angular/core/rxjs-interop';
 import {GamesService} from './games.service';
-import {AsyncPipe, DatePipe, JsonPipe, NgOptimizedImage} from '@angular/common';
-import {Device, GameSearchItem, PaginatedSearchResult, PaginationResult, Sort} from './game-search-result.model';
-import {combineLatest, debounceTime, map, Observable, shareReplay, startWith, switchMap} from 'rxjs';
-import {GameDetailComponent} from '../game-detail/game-detail.component';
+import {AsyncPipe, DatePipe, NgOptimizedImage} from '@angular/common';
+import {Device, GameSearchItem, PaginatedSearchResult, Sort} from './game-search-result.model';
+import {combineLatest, debounceTime, map, Observable, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -15,7 +15,6 @@ import { InfiniteScrollComponent } from "../infinite-scroll/infinite-scroll.comp
 @Component({
   selector: 'app-games',
   imports: [
-    JsonPipe,
     AsyncPipe,
     FormsModule,
     MatFormFieldModule,
@@ -33,32 +32,64 @@ import { InfiniteScrollComponent } from "../infinite-scroll/infinite-scroll.comp
   styleUrl: './games.component.scss',
   providers: [GamesService]
 })
-export class GamesComponent {
+export class GamesComponent implements OnInit {
+  private firstPageNumber: number = 1;
   private _gamesService: GamesService = inject(GamesService);
   public devices$: Observable<Device[]> = this._gamesService.getDevices$()
   public searchControl: FormControl = new FormControl<string>('',);
   public deviceControl: FormControl = new FormControl<string>('',);
   public sortControl: FormControl = new FormControl({ field: 'release_date_eur', sort: 'DESC' },);
+  private _pageS: WritableSignal<number> = signal<number>(this.firstPageNumber);
+  private isMaxPage = true;
 
-  public result$: Observable<PaginatedSearchResult<GameSearchItem>> = combineLatest([
-    this.getValueFromControl$<string>(this.searchControl),
-    this.getValueFromControl$<string>(this.deviceControl),
-    this.getValueFromControl$<Sort>(this.sortControl)
-  ]).pipe(
-    debounceTime(1000/3),
-    switchMap(([search, device, sort]) =>
-      this._gamesService.getPaginated$(search, device, sort)),
-    shareReplay()
+  public result$: Observable<PaginatedSearchResult<GameSearchItem>> =  toObservable(this._pageS).pipe(
+    switchMap( page => {
+      const search = this.searchControl.getRawValue();
+      const device = this.deviceControl.getRawValue();
+      const sort = this.sortControl.getRawValue();
+      return this._gamesService.getPaginated$(search, device, sort, page)
+    }),
+    scan((accumulator, current) => {
+      if(this._pageS() > this.firstPageNumber ) {
+        accumulator.pagination = current.pagination;
+        accumulator.data = accumulator.data.concat(current.data);
+        return accumulator;
+      }
+      return current;
+    }),
+    tap(result => {
+      this.isMaxPage = this._pageS() >= result.pagination.total_pages
+    }),
+    shareReplay(1)
   );
-  public pagination$: Observable<PaginationResult> = this.result$.pipe(map((result: PaginatedSearchResult<GameSearchItem>) => result.pagination));
+
+
   public games$: Observable<GameSearchItem[]> = this.result$.pipe(map(result => result.data));
 
+  public ngOnInit(): void {
+    this.watchSearchFieldsForReset()
+  }
+
   public fetchMore(): void {
-    console.log('fetchMore')
+    if(!this.isMaxPage) {
+      this._pageS.set(this._pageS() + 1)
+    }
   }
   private getValueFromControl$<T>(control: FormControl): Observable<T> {
     return control.valueChanges.pipe(
       startWith(control.value)
     )
+  }
+
+  private watchSearchFieldsForReset(): void {
+    combineLatest([
+      this.getValueFromControl$<string>(this.searchControl),
+      this.getValueFromControl$<string>(this.deviceControl),
+      this.getValueFromControl$<Sort>(this.sortControl)
+    ]).pipe(
+      debounceTime(1000/3)
+    ).subscribe(_ => {
+      this._pageS.set(this.firstPageNumber)
+    })
   }
 }

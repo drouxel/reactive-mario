@@ -23,9 +23,9 @@ export class GamesService {
       )
   }
 
-  public getPaginated$(filter: string, device: string, sort: Sort): Observable<PaginatedSearchResult<GameSearchItem>> {
+  public getPaginated$(filter: string, device: string, sort: Sort, page: number): Observable<PaginatedSearchResult<GameSearchItem>> {
     return this.http.post<MarioUniversalisResponse<{ games: PaginatedSearchResult<GameSearchItem> }>>
-    (this._baseUrl, {query: this.getGamesQuery(filter, device, sort)})
+    (this._baseUrl, {query: this.getGamesQuery(filter, device, sort, page)})
       .pipe(
         map((response) => response.data.games)
       )
@@ -61,11 +61,12 @@ export class GamesService {
     }`
   }
 
-  private getGamesQuery(filter: string, device: string, sort: Sort): string {
+  private getGamesQuery(filter: string, device: string, sort: Sort, page: number): string {
     return `{
       games(search: "${filter}" ${device? ', device: '+ device : ''},
         order_by: { field: ${sort.field}, sort: ${sort.sort}},
-        per_page: 10
+        per_page: 10,
+        page: ${page}
       ) {
         pagination {
           total_count

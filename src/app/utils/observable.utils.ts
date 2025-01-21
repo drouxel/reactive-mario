@@ -59,7 +59,7 @@ export function logger<EntryData>(identifier: string): OperatorFunction<EntryDat
         return new Observable(subscriber => {
             source.subscribe({
                 next(value) {
-                    console.log(identifier, 'next', value);
+                    console.info(identifier, 'next', value);
                     subscriber.next(value);
                 },
                 error(error) {

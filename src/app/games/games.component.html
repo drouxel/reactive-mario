@@ -30,7 +30,6 @@
         <mat-option [value]="{ field: 'popularity', sort: 'DESC' }">Les plus populaires</mat-option>
       </mat-select>
     </mat-form-field>
-  {{pagination$ | async | json}}
   </form>
 </header>
 @let games = (games$ | async);
