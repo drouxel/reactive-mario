@@ -12,17 +12,22 @@ import { filterNullAndUndefined } from '../utils/observable.utils';
 export class UserStore {
     private _user$: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
-    public getCurrentUser(): Observable<User> {
-        return this.getUser().pipe(
+    public getCurrentUser$(): Observable<User> {
+        return this.getUser$().pipe(
             filterNullAndUndefined()
         );
     }
 
-    public getUser(): Observable<User | undefined> {
+    public getUser$(): Observable<User | undefined> {
         return this._user$.asObservable();
     }
 
     public setUser(user?: User): void {
         this._user$.next(user);
     }
+
+    public getUser(): User | undefined {
+        return this._user$.value;
+    }
 }
+

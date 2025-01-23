@@ -8,6 +8,7 @@ import {provideHttpClient} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { UserStore } from './user-detail/user.store';
 import { CharacterStore } from './character-pick/character.store';
+import { GameStore } from './games/game.store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(withEventReplay()), provideAnimationsAsync(),
     UserStore,
-    CharacterStore
+    CharacterStore,
+    GameStore
   ]
 };

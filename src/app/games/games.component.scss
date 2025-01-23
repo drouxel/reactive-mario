@@ -9,6 +9,12 @@
       img {
         max-height: 8vh;
       }
+      tr {
+        cursor: pointer;
+        &.selected {
+          background-color: tomato;
+        }
+      }
     }
     overflow: auto;
     height: 80%;

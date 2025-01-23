@@ -3,37 +3,81 @@
   flex-direction: column;
   height: 100%;
   gap: 1rem;
-  border-radius: 1em 0 0 1em;
-  padding: 0 1rem ;
   min-width: 3em;
+  div {
+    height: 100%;
+    width: 100%;
+    padding: 0 1rem ;
+    background-color: #eee;
+    border-radius: 1em 0 0 1em;
+
+    &.mario {
+      background-color: red;
+    }
+    &.peach {
+      background-color: pink;
+    }
+    &.toad {
+      background-image: radial-gradient(red 20%, transparent 20%);
+      background-color: rgb(235, 230, 230);
+      background-position: 0 0, 25px 25px;
+      background-size: 75px 75px;
+    }
+    &.luigi {
+      background-color: green;
+    }
+    &.daisy {
+      background-color: orange;
+    }
+    &.rosalina {
+      background-color: rgb(109, 224, 245);
+    }
+    &.yoshi {
+      background-color: lightgreen;
+    }
+    &.dry-bones {
+      background-color: gray;
+    }
+    &.wario {
+      background-color: yellow;
+    }
+    &.waluigi {
+      background-color: rgb(66, 0, 128);
+    }
+    &.donkey-kong {
+      background-color: burlywood;
+    }
+    &.bowser {
+      background-color: greenyellow;
+    }
+    
+    a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: inset 0 1px 0 0 #ffffff;
+      background: #ffffff linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+      border-radius: 6px;
+      border: 1px solid #dcdcdc;
+      cursor: pointer;
+      color: #666666;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 6px 24px;
+      text-decoration: none;
+      text-shadow: 0 1px 0 #ffffff;
+      outline: 0;
+      width: 7em;
   
-  background-color: #eee;
-
-  a {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: inset 0 1px 0 0 #ffffff;
-    background: #ffffff linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-    border-radius: 6px;
-    border: 1px solid #dcdcdc;
-    cursor: pointer;
-    color: #666666;
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 6px 24px;
-    text-decoration: none;
-    text-shadow: 0 1px 0 #ffffff;
-    outline: 0;
-    width: 7em;
-
-    &.active {
-      box-shadow: inset 0 1px 0 0 #dcecfb;
-      background: #bddbfa linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
-      border: 1px solid #84bbf3;
-      color: #ffffff;
-      text-shadow: 0 1px 0 #528ecc;
+      &.active {
+        box-shadow: inset 0 1px 0 0 #dcecfb;
+        background: #bddbfa linear-gradient(to bottom, #bddbfa 5%, #80b5ea 100%);
+        border: 1px solid #84bbf3;
+        color: #ffffff;
+        text-shadow: 0 1px 0 #528ecc;
+      }
     }
   }
 }
+

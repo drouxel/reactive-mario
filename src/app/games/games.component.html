@@ -70,7 +70,12 @@
         </ng-container>
   
         <tr mat-header-row *matHeaderRowDef="['image', 'name', 'date', 'genres']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['image', 'name', 'date', 'genres'];"></tr>
+        <tr mat-row 
+          [class.selected]="(selectedGame$ | async)?.id === row.id" 
+          *matRowDef="let row; 
+          columns: ['image', 'name', 'date', 'genres'];"
+          (click)="selectGame(row)"
+          ></tr>
       </table>
     </app-infinite-scroll>
 
@@ -82,6 +87,3 @@
     you lose
   }
 </main>
-<footer>
-  <p>on mettra des infos ici plus tard</p>
-</footer>

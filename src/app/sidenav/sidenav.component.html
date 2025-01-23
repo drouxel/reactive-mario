@@ -1,17 +1,19 @@
-<mat-list>
-    <mat-list-item>
-        <a routerLink="/user" routerLinkActive="active">
-            <mat-icon>person</mat-icon>User
-        </a>
-    </mat-list-item>
-    <mat-list-item>
-        <a routerLink="/character" routerLinkActive="active">
-            <mat-icon>smart_toy</mat-icon>Character
-        </a>
-    </mat-list-item>
-    <mat-list-item>
-        <a routerLink="/games" routerLinkActive="active">
-            <mat-icon>gamepad</mat-icon>Game
-        </a>
-    </mat-list-item>
-</mat-list>
+<div [class]="(currentCharacter$ | async)?.class">
+    <mat-list>
+        <mat-list-item>
+            <a routerLink="/user" routerLinkActive="active">
+                <mat-icon>person</mat-icon>User
+            </a>
+        </mat-list-item>
+        <mat-list-item>
+            <a routerLink="/character" routerLinkActive="active">
+                <mat-icon>smart_toy</mat-icon>Character
+            </a>
+        </mat-list-item>
+        <mat-list-item>
+            <a routerLink="/games" routerLinkActive="active">
+                <mat-icon>gamepad</mat-icon>Game
+            </a>
+        </mat-list-item>
+    </mat-list>
+</div>
