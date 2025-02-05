@@ -1,6 +1,6 @@
 import { Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { combineLatest, map, Observable, shareReplay } from 'rxjs';
+import { combineLatest, map, Observable, shareReplay, withLatestFrom } from 'rxjs';
 import { UserStore } from '../user-detail/user.store';
 import { User } from '../user-detail/user.model';
 import { logger } from '../utils/observable.utils';
@@ -18,10 +18,10 @@ import { GameStore } from '../games/game.store';
 })
 export class HeaderComponent implements OnInit{
   private _userStore: UserStore = inject(UserStore);
-  public currentUser$: Observable<User | undefined> = this._userStore.getUser$().pipe(logger('getCurrentUser'), shareReplay(1));;
+  public currentUser$: Observable<User | undefined> = this._userStore.getCurrentUser$()
+  .pipe(logger('HeaderComponent | getCurrentUser$'), shareReplay(1));
   public currentCharacter$: Observable<Character | undefined> = inject(CharacterStore).getCharacter$();
   public currentGame$: Observable<GameDetail | undefined> = inject(GameStore).getCurrentGame$();
-  public currentUser: User | undefined = undefined;
   public descriptionCombined$: Observable<string> = combineLatest([
     this.currentCharacter$,
     this.currentGame$,
@@ -31,11 +31,20 @@ export class HeaderComponent implements OnInit{
       return this.getDescription(user, character, game)
     })
   )
+  
+  // utiliser cette définition en remplacement de la précédente pour voir le comportement du header changer
+
+  // public descriptionCombined$ = this.currentUser$.pipe(
+  //   withLatestFrom(this.currentCharacter$, this.currentGame$),
+  //   map(([user, character, game]) => {
+  //     return this.getDescription(user, character, game)
+  //   })
+  // )
 
 
   public ngOnInit(): void {
     // have a look here to see what happens while the currentUser is undefined
-    this.currentUser$.subscribe(user => console.log('current user is', user));
+    this.currentUser$.subscribe(user => console.log('HeaderComponent | ngOnInit | current user is', user));
   }
 
   private getDescription(user?: User, character?: Character, game?: GameDetail): string {

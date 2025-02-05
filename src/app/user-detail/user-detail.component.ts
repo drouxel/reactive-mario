@@ -8,7 +8,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { UserStore } from './user.store';
 import { Router } from '@angular/router';
-import { autoComplete } from '../utils/observable.utils';
+import { autoComplete, logger } from '../utils/observable.utils';
 
 @Component({
   selector: 'app-user-detail',
@@ -39,12 +39,14 @@ export class UserDetailComponent implements OnInit {
 
   public ngOnInit(): void {
       this._userStore.getUser$().pipe(
-        autoComplete()
+        //autoComplete(),
+        logger('UserDetailComponent | ngOnInit | getUser$')
       ).subscribe(user => {
         this.userForm.reset(user)
       })
   }
   public updateUser(): void {
+    console.log('UserDetailComponent | updateUser')
     if (this.userForm.valid) {
       this._userStore.setUser(this.userForm.value);
       this._router.navigate(['character'])

@@ -1,4 +1,4 @@
-import { Observable, OperatorFunction } from "rxjs";
+import { Observable, of, OperatorFunction, switchMap } from "rxjs";
 
 /**
  * use this when you want to stop emissions when the source value is null or undefined 
@@ -73,4 +73,32 @@ export function logger<EntryData>(identifier: string): OperatorFunction<EntryDat
             })
         })
     } 
+}
+
+function myUglyFunction(): void {
+    const myFirstSource$ = of(10);
+    let result: number = 0;
+    myFirstSource$.subscribe( value => {
+        getDoubleAsync(value).subscribe(double => {
+            getHalfAsync(value).subscribe( half => {
+                result = half;
+            });
+        });
+    });
+}
+
+function myBetterLookingCode(): void {
+    const myFirstSource$ = of(10);
+    const result$ = myFirstSource$.pipe(
+        switchMap(value => getDoubleAsync(value)),
+        switchMap(double => getHalfAsync(double))
+    );
+}
+
+function getDoubleAsync(value: number): Observable<number> {
+    return of(value *2);
+}
+
+function getHalfAsync(value: number): Observable<number> {
+    return of(value / 2);
 }
